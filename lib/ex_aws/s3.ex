@@ -99,7 +99,7 @@ defmodule ExAws.S3 do
     | {:virtual_host, boolean}
     | {:s3_accelerate, boolean}
     | {:query_params, [{binary, binary}]}
-    | {:datetime, calendar:datetime()}
+    | {:datetime, any}
   ]
 
   @type amz_meta_opts :: [{atom, binary} | {binary, binary}, ...]
