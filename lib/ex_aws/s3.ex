@@ -99,6 +99,7 @@ defmodule ExAws.S3 do
     | {:virtual_host, boolean}
     | {:s3_accelerate, boolean}
     | {:query_params, [{binary, binary}]}
+    | {:datetime, datetime()}
   ]
 
   @type amz_meta_opts :: [{atom, binary} | {binary, binary}, ...]
@@ -995,6 +996,7 @@ defmodule ExAws.S3 do
     query_params = Keyword.get(opts, :query_params, [])
     virtual_host = Keyword.get(opts, :virtual_host, false)
     s3_accelerate = Keyword.get(opts, :s3_accelerate, false)
+    datetime = Keyword.get(opts, :datetime, :calendar.universal_time)
 
     {config, virtual_host} =
       if s3_accelerate,
@@ -1005,7 +1007,6 @@ defmodule ExAws.S3 do
       true -> {:error, "expires_in_exceeds_one_week"}
       false ->
         url = url_to_sign(bucket, object, config, virtual_host)
-        datetime = :calendar.universal_time
         ExAws.Auth.presigned_url(http_method, url, :s3, datetime, config, expires_in, query_params)
     end
   end
